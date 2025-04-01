@@ -1,4 +1,4 @@
-# gds_api
+# gds-limo-api
 
 A Node.js TypeScript API that interacts with the GDS LIMO Web Service.
 
@@ -21,8 +21,8 @@ A Node.js TypeScript API that interacts with the GDS LIMO Web Service.
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/sobhisobhi/gds_api.git
-cd gds_api
+git clone https://github.com/sobhisobhi/gds-limo-api.git
+cd gds-limo-api
 ```
 
 2. Install dependencies:
