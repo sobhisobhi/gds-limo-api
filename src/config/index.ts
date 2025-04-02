@@ -6,7 +6,6 @@ export const config = {
   gds: {
     API_URL: env.GDS_API_URL,
     API_KEY: env.GDS_API_KEY,
-    API_SECRET: env.GDS_API_SECRET,
     LIMO: env.GDS_LIMO
   },
   jwt: {

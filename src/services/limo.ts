@@ -1,26 +1,29 @@
-import { Request } from 'express';
 import axios from "axios";
+import jwt from 'jsonwebtoken';
 import { generateLimoToken } from "../controllers/auth";
 import { config } from '../config';
+import { Data, MissionFilter } from "../types";
 
 const GDS_URL = config.gds.API_URL;
 
-export const getMissions = async (
-  filter: Record<string, string> = {},
-  payload: Record<string, string> = {},
-) => {
+export const getMissions = async () => {
+  const payload: Data = {
+    limo: config.gds.LIMO,
+    params: {
+      C_Gen_Mission: {}
+    }
+  };
+
   const token = generateLimoToken(payload);
-  console.log('token: ', token);
+  const decodedHeader = jwt.decode(token, { complete: true })?.header;
+
   try {
     const response = await axios.post(
       `${GDS_URL}/get-ressource`,
-      {},
+      payload,
       {
         headers: {
-          alg: 'HS256',
-          typ: 'JWT',
-          apiKey: config.gds.API_KEY,
-          time: Math.floor(Date.now() / 1000),
+          ...decodedHeader,
           Authorization: `Bearer ${token}`,
         },
       }
@@ -34,13 +37,14 @@ export const getMissions = async (
 
 export const createMission = async (missionData: any) => {
   const token = generateLimoToken(missionData);
-
+  const decodedHeader = jwt.decode(token, { complete: true })?.header;
   try {
     const response = await axios.post(
       `${GDS_URL}/set-ressource-v2`,
       missionData,
       {
         headers: {
+          ...decodedHeader,
           Authorization: `${token}`,
         },
       }
@@ -53,6 +57,7 @@ export const createMission = async (missionData: any) => {
 
 export const setCallback = async (callbackUrl: string) => {
   const token = generateLimoToken();
+  const decodedHeader = jwt.decode(token, { complete: true })?.header;
 
   try {
     const response = await axios.post(
@@ -62,6 +67,7 @@ export const setCallback = async (callbackUrl: string) => {
       },
       {
         headers: {
+          ...decodedHeader,
           Authorization: `Bearer ${token}`,
         },
       }
